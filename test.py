@@ -44,7 +44,7 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
             'min_samples_split': [2, 5, 10],
             'min_samples_leaf': [1, 2, 4],
         }
-        classifier = GridSearchCV(RandomForestClassifier(random_state=42), parameters, n_jobs=-1)
+        classifier = GridSearchCV(RandomForestClassifier(random_state=42), parameters, n_jobs=-1, verbose=2)
 
     if cfg_proj.model == "SVC":
         parameters = {'kernel':['linear', 'poly', 'rbf', 'sigmoid'], 'C':[0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 25, 50, 75, 100, 200, 500, 700, 1000], "degree": [1, 3, 5, 7, 9, 11, 13], "gamma": ["scale", "auto"]}
@@ -52,9 +52,9 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
 
     if cfg_proj.model == "GBC":
         parameters = {
-            'n_estimators': [50, 100, 150, 200],
+            'n_estimators': [50, 100, 200],
             'learning_rate': [0.01, 0.1, 0.2],
-            'max_depth': range(3, 15, 2),
+            'max_depth': [3, 7, 10],
             'min_samples_split': [2, 5, 10],
             'min_samples_leaf': [1, 2, 4],
         }
@@ -88,7 +88,6 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
     df_transcripts = pd.read_csv("data/transcripts.csv")
     zh_uids = df_transcripts[df_transcripts["language"] == "zh"]["uid"].values
 
-    df = pd.read_csv("results/submission.csv")
     df.loc[df["uid"].isin(zh_uids), "diagnosis_control"] = 0.0005
     df.loc[df["uid"].isin(zh_uids), "diagnosis_mci"] = 0.999
     df.loc[df["uid"].isin(zh_uids), "diagnosis_adrd"] = 0.0005
