@@ -28,7 +28,7 @@ You can change the arguments from `main.py` to try different settings.
   - Use as `--remove_noise` to enable.
 
 - `--grid_search` (flag, optional): 
-  - If set, performance GridSearch for best hyperparameters of classifiers.
+  - If set, perform GridSearch for the best hyperparameters of classifiers.
   - Use as `--grid_search` to enable.
 
 ### Examples
