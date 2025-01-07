@@ -9,7 +9,7 @@ Early detection of cognitive diseases is critical for effective treatment. While
 Use `pip install -r requirements.txt` to install necessary libraries. 
 
 ## Data Preparation
-Download acoustic data in PREPARE Challenge website in [https://www.drivendata.org/competitions/299/competition-nih-alzheimers-acoustic-2/](https://www.drivendata.org/competitions/299/competition-nih-alzheimers-acoustic-2/) and put it in folder named `data`.
+Download acoustic data from PREPARE Challenge website in [https://www.drivendata.org/competitions/299/competition-nih-alzheimers-acoustic-2/](https://www.drivendata.org/competitions/299/competition-nih-alzheimers-acoustic-2/) and put it in folder named `data`.
 
 ## Demos
 Here we provide several demos of results in the project report.
