@@ -29,7 +29,7 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
     
-    if cfg_proj.outlier_detection:
+    if cfg_proj.remove_noise:
         svm = OneClassSVM(gamma='auto', nu=0.1)
         svm.fit(X_train)
         outliers = svm.predict(X_train)
