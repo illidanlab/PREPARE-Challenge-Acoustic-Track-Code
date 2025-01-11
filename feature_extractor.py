@@ -60,8 +60,8 @@ def extract_mfcc():
 def extract_wav2vec():
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
-    train_paths = sorted(glob.glob("data/clean_train_audios/*.mp3"))
-    test_paths = sorted(glob.glob("data/clean_test_audios/*.mp3"))
+    train_paths = sorted(glob.glob("data/train_audios/*.mp3"))
+    test_paths = sorted(glob.glob("data/test_audios/*.mp3"))
     
     processor = Wav2Vec2Processor.from_pretrained("facebook/wav2vec2-large-960h-lv60")
     model = Wav2Vec2Model.from_pretrained("facebook/wav2vec2-large-960h-lv60")
