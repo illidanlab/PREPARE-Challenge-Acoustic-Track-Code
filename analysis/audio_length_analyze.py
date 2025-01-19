@@ -4,9 +4,11 @@ import os
 from tqdm import tqdm
 import pandas as pd
 import matplotlib.pyplot as plt
+import pickle
 
 types = ["train", "test"]
 uids = []
+uid2length = {}
 
 for t in types:
     paths = sorted(glob.glob(f"data/{t}_audios/*.mp3"))
@@ -23,7 +25,8 @@ for t in types:
         subject_name = os.path.basename(path)[:-4]
         waveform, sample_rate = torchaudio.load(path)
         lengths.append(waveform.shape[1]//sample_rate)
-        if waveform < 10:
+        uid2length[subject_name] = waveform.shape[1]//sample_rate
+        if waveform.shape[1]//sample_rate < 10:
             uids.append(subject_name)
 
     plt.hist(lengths, range = (0, 30))
@@ -43,3 +46,6 @@ for t in types:
         print(f"Number of Audio Files Having Length Between {r[0]} and {r[1]} is {cnt}")
 
 print("uids less than 10 seconds are", uids)
+
+with open("features/length.pkl", "wb") as f:
+    pickle.dump(uid2length, f)

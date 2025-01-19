@@ -14,9 +14,9 @@ def main(cfg_proj):
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()  
 
-    parser.add_argument("--acoustic", nargs='+', type=str, default = ["Wav2Vec", "MFCC"], required=False) # ["Wav2Vec", "MFCC"]
+    parser.add_argument("--acoustic", nargs='+', type=str, default = ["Wav2Vec", "MFCC"], required=False) # ["Wav2Vec", "MFCC", "eGeMAPS"]
     parser.add_argument("--model", type=str, default = "SVC", required=False) # MLP, SVC, GBC, RF, LR, NB
-    parser.add_argument("--remove_noise", action = "store_true") # False, True
+    parser.add_argument("--remove_noise", type=str, default="all", required=False) # all, short, language, alexa, svm, none
     parser.add_argument("--grid_search", action = "store_true") 
     cfg_proj = parser.parse_args()
     main(cfg_proj)

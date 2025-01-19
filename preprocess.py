@@ -29,11 +29,22 @@ def get_data(cfg_proj, train = 1):
 
     for uid in dic2features:
         if train and uid in uids:
-            if cfg_proj.remove_noise and ((uid in alexa_uids) \
+            if cfg_proj.remove_noise == "all" and ((uid in alexa_uids) \
                                           or (df_transcript[df_transcript["uid"] == uid]["language"].values[0] == "zh") \
                                             or (df_transcript[df_transcript["uid"] == uid]["language"].values[0] == "gl") \
                                                 or (uid in short_uids)):
                 continue
+
+            if cfg_proj.remove_noise == "alexa" and (uid in alexa_uids): 
+                continue
+
+            if cfg_proj.remove_noise == "language" and ((df_transcript[df_transcript["uid"] == uid]["language"].values[0] == "zh") \
+                                            or (df_transcript[df_transcript["uid"] == uid]["language"].values[0] == "gl")):
+                continue
+        
+            if cfg_proj.remove_noise == "short" and (uid in short_uids):
+                continue
+            
             cognitive_status = list(df[df["uid"] == uid].iloc[:, 1:].values[0])
             y.append(cognitive_status.index(1.0))
             X.append(dic2features[uid])

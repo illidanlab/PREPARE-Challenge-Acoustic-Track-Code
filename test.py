@@ -29,7 +29,7 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
     
-    if cfg_proj.remove_noise:
+    if cfg_proj.remove_noise in ["all", "svm"]:
         svm = OneClassSVM(gamma='auto', nu=0.1)
         svm.fit(X_train)
         outliers = svm.predict(X_train)
@@ -37,15 +37,15 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
         X_train = X_train[outliers == 1]
         y_train = np.array(y_train)[outliers == 1]
 
-    grid_search = cfg_proj.grid_search or (not os.path.exists(f"results_local/{cfg_proj.model}.csv"))
+    grid_search = cfg_proj.grid_search or (not os.path.exists(f"results_local/{cfg_proj.acoustic}_{cfg_proj.model}.csv"))
     
     if not grid_search:
-        df = pd.read_csv(f"results_local/{cfg_proj.model}.csv")
+        df = pd.read_csv(f"results_local/{cfg_proj.acoustic}_{cfg_proj.model}.csv")
         best_params = eval(df.iloc[0, 0])
         
     if cfg_proj.model == "DT":
         parameters = {
-            'criterion': ['gini', 'entropy'],  # or 'log_loss' for newer versions of scikit-learn
+            'criterion': ['gini', 'entropy'],
             'max_depth': [None, 5, 10, 15],
             'min_samples_split': [2, 5, 10],
             'min_samples_leaf': [1, 2, 4],
@@ -86,7 +86,7 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
             classifier = RandomForestClassifier(random_state=42, **best_params)
 
     if cfg_proj.model == "SVC":
-        parameters = {'kernel':['linear', 'poly', 'rbf', 'sigmoid'], 'C':[0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 25, 50, 75, 100, 200, 500, 700, 1000], "degree": [1, 3, 5, 7, 9, 11, 13], "gamma": ["scale", "auto"]}
+        parameters = {'kernel':['linear', 'poly', 'rbf', 'sigmoid'], 'C':[0.001, 0.005, 0.01, 0.05, 0.1, 0.5, 1, 5, 10, 25, 50, 75, 100], "degree": [1, 3, 5, 7], "gamma": ["scale", "auto"]}
         
         if grid_search:
             classifier = GridSearchCV(SVC(probability=True, max_iter=1000000, random_state = 42), parameters, n_jobs=-1, verbose=2)
@@ -129,7 +129,7 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
         df = df.sort_values(by='mean_test_score', ascending=False)
         
         # Save cross-validation performance
-        df.to_csv(f"results_local/{cfg_proj.model}.csv", index=False)
+        df.to_csv(f"results_local/{cfg_proj.acoustic}_{cfg_proj.model}.csv", index=False)
 
     # Generate test predictions
     proba = classifier.predict_proba(X_test)
@@ -179,6 +179,8 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
     if test_log_loss > log_loss(y_true, np.array(df.iloc[:, 1:])):
         df_best = copy.deepcopy(df)
         test_log_loss = log_loss(y_true, np.array(df.iloc[:, 1:]))
+        
+    df_best.to_csv(f"results/{cfg_proj.acoustic}_{cfg_proj.model}.csv", index = False)
     
-    df_best.to_csv(f"results/{cfg_proj.model}.csv", index = False)
-    print(f"Test Log Loss (Multiclass) {test_log_loss:.3f}")
+    print(f"Final Test Log loss (Multiclass) {log_loss(y_true, np.array(df.iloc[:, 1:])):.3f}")
+    print(f"Best Test Log Loss (Multiclass) {test_log_loss:.3f}")

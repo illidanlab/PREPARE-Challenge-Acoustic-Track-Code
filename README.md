@@ -25,9 +25,9 @@ You can change the arguments from `main.py` to try different settings.
   - Options include: `"MLP"`, `"SVC"`, `"GBC"`, `"RF"`, `"LR"`, `"NB"`.
 
 - `--remove_noise` (flag, optional): 
-  - If set, removes noisy samples, including those with short speech, interactions with Alexa, speech in non-majority languages within the dataset, and samples identified by an outlier detection algorithm.
-  - Use as `--remove_noise` to enable.
-
+  - Specifies type of noise to remove
+  - Options include: `"all"`, `"short"`, `"language"`, `"alexa"`, `"svm"`, `"none"`.
+  
 - `--grid_search` (flag, optional): 
   - If set, perform GridSearch for the best hyperparameters of classifiers.
   - Use as `--grid_search` to enable.
@@ -36,7 +36,7 @@ You can change the arguments from `main.py` to try different settings.
 
 - Use MFCC as feature and Logistic Regression as classifier: `python main.py --acoustic MFCC --model LR`
 - Remove noisy samples in training data: `python main.py --remove_noise`
-- Use Wav2Vec + MFCC as features, Support Vector Classifier as classifier, Grid Search for hyper-parameters, and remove noisy samples: `python main.py --acoustic Wav2Vec MFCC --model SVC --remove_noise --grid_search`
+- Use Wav2Vec + MFCC as features, Support Vector Classifier as classifier, Grid Search for hyper-parameters, and remove all noisy samples: `python main.py --acoustic Wav2Vec MFCC --model SVC --remove_noise all --grid_search`
 
 ## Acknowledgement
 This material is based in part upon work supported by the National Science Foundation under
