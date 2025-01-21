@@ -182,5 +182,5 @@ def test(X_train, X_test, y_train, test_uids, cfg_proj):
         
     df_best.to_csv(f"results/{cfg_proj.acoustic}_{cfg_proj.model}.csv", index = False)
     
-    print(f"Final Test Log loss (Multiclass) {log_loss(y_true, np.array(df.iloc[:, 1:])):.3f}")
+    # print(f"Final Test Log loss (Multiclass) {log_loss(y_true, np.array(df.iloc[:, 1:])):.3f}")
     print(f"Best Test Log Loss (Multiclass) {test_log_loss:.3f}")

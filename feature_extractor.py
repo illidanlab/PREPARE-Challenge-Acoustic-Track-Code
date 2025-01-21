@@ -10,7 +10,7 @@ import numpy
 import pickle
 from tqdm import tqdm
 
-def mfcc(path):
+def mfcc_helper(path):
     '''log spectrogram -> mfcc features
     mfcc: original 13 frequencies
     delta_mfcc, delta2_mfcc: vel. and accel. features
@@ -42,14 +42,14 @@ def extract_mfcc():
 
     for path in tqdm(train_paths):
         subject_name = os.path.basename(path)[:-4]
-        mfcc = mfcc(path)
+        mfcc = mfcc_helper(path)
         minima, maxima, mean, std, skewness, kurtos = mfcc.min(axis = 1), mfcc.max(axis = 1), mfcc.mean(axis = 1), mfcc.std(axis = 1), skew(mfcc, axis = 1), kurtosis(mfcc, axis = 1)
         features = np.concatenate((minima,maxima,mean, std, skewness, kurtos), axis=0)
         id2features[subject_name] = features
 
     for path in tqdm(test_paths):
         subject_name = os.path.basename(path)[:-4]
-        mfcc = mfcc(path)
+        mfcc = mfcc_helper(path)
         minima, maxima, mean, std, skewness, kurtos = mfcc.min(axis = 1), mfcc.max(axis = 1), mfcc.mean(axis = 1), mfcc.std(axis = 1), skew(mfcc, axis = 1), kurtosis(mfcc, axis = 1)
         features = np.concatenate((minima,maxima,mean, std, skewness, kurtos), axis=0)
         id2features[subject_name] = features
