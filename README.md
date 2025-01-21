@@ -38,7 +38,3 @@ You can change the arguments from `main.py` to try different settings.
 - Remove noisy samples in training data: `python main.py --remove_noise`
 - Use Wav2Vec + MFCC as features, Support Vector Classifier as classifier, Grid Search for hyper-parameters, and remove all noisy samples: `python main.py --acoustic Wav2Vec MFCC --model SVC --remove_noise all --grid_search`
 
-## Acknowledgement
-This material is based in part upon work supported by the National Science Foundation under
-Grant IIS-2212174, IIS-1749940, , Office of Naval Research N00014-24-1-2168, and National
-Institute on Aging (NIA) RF1AG072449.
